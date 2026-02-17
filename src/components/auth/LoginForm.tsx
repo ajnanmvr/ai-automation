@@ -33,6 +33,7 @@ export default function LoginForm() {
 
                                 <div className="grid gap-6">
                                     <FormField name="email"
+                                        control={form.control}
                                         render={({ field }) =>
                                             <FormItem>
                                                 <FormLabel>Email</FormLabel>
@@ -42,6 +43,7 @@ export default function LoginForm() {
                                             </FormItem>}
                                     />
                                     <FormField name="password"
+                                        control={form.control}
                                         render={({ field }) =>
                                             <FormItem>
                                                 <FormLabel>Password</FormLabel>
