@@ -7,10 +7,13 @@ import { Button } from "../ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const registerSchema = z.object({
     email: z.email("email is required"),
-    password: z.string().min(6, "Minimum 6 characters required"),
+    password: z.string().min(8, "Minimum 8 characters required"),
     password2: z.string()
 }).refine((data) => data.password === data.password2, {
     message: "passwords don't match",
@@ -20,6 +23,7 @@ const registerSchema = z.object({
 type TRegisterForm = z.infer<typeof registerSchema>
 
 export default function RegisterForm() {
+    const router = useRouter()
     const form = useForm<TRegisterForm>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
@@ -29,8 +33,21 @@ export default function RegisterForm() {
         }
     })
 
-    const onSubmit = (values: TRegisterForm) => {
-        console.log(values)
+    const onSubmit = async (values: TRegisterForm) => {
+        await authClient.signUp.email({
+            name: values.email,
+            email: values.email,
+            password: values.password,
+            callbackURL: "/",
+        }, {
+            onSuccess: () => {
+                router.push("/")
+            },
+            onError: (ctx) => {
+                toast.error(ctx.error.message)
+            }
+        }
+        )
     }
     const isPending = form.formState.isSubmitting
 

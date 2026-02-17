@@ -7,6 +7,9 @@ import { Button } from "../ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const loginSchema = z.object({
     email: z.email('Please enter a valid email'),
@@ -17,6 +20,7 @@ type TLoginForm = z.infer<typeof loginSchema>
 
 
 export default function LoginForm() {
+    const router = useRouter()
     const form = useForm<TLoginForm>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -26,7 +30,17 @@ export default function LoginForm() {
     })
 
     const onSubmit = async (values: TLoginForm) => {
-        console.log(values)
+        await authClient.signIn.email({
+            email: values.email,
+            password: values.password
+        }, {
+            onSuccess: () => {
+                router.push("/")
+            },
+            onError: (ctx) => {
+                toast.error(ctx.error.message)
+            }
+        })
     }
 
     const isPending = form.formState.isSubmitting
