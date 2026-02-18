@@ -10,6 +10,7 @@ import { Input } from "../ui/input";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import Image from "next/image";
 
 const loginSchema = z.object({
     email: z.email('Please enter a valid email'),
@@ -46,61 +47,63 @@ export default function LoginForm() {
     const isPending = form.formState.isSubmitting
 
     return (
-        <div className="flex items-center justify-center h-screen">
-            <Card className="max-w-3xl w-full">
-                <CardHeader className="text-center">
-                    <CardTitle>Welcome back</CardTitle>
-                    <CardDescription>Sign in to your account</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <Card className="w-full">
+            <CardHeader className="text-center">
+                <CardTitle>Welcome back</CardTitle>
+                <CardDescription>Sign in to your account</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <div className="grid gap-6">
+
+                            <div className="flex flex-col gap-2">
+                                <Button variant="outline" className="w-full" type="button" disabled={isPending}>
+                                    <Image src="/logos/google.svg" alt="google" width={18} height={18} />
+                                    Login with Google</Button>
+                                <Button variant="outline" className="w-full" type="button" disabled={isPending}>
+                                    <Image src="/logos/github.svg" alt="github" width={18} height={18} />
+                                    Login with GitHub</Button>
+                            </div>
+
                             <div className="grid gap-6">
+                                <FormField name="email"
+                                    control={form.control}
+                                    render={({ field }) =>
+                                        <FormItem>
+                                            <FormLabel>Email</FormLabel>
+                                            <FormControl>
+                                                <Input type="email" placeholder="example@gmail.com" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>}
+                                />
+                                <FormField name="password"
+                                    control={form.control}
+                                    render={({ field }) =>
+                                        <FormItem>
+                                            <FormLabel>Password</FormLabel>
+                                            <FormControl>
+                                                <Input type="password" placeholder="••••••••" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>}
+                                />
+                                <Button type="submit" disabled={isPending}>
+                                    Login
+                                </Button>
+                                <div className="text-center">
+                                    Don&apos;t have an account?{" "}
+                                    <Link href={"/register"} className="underline underline-offset-4">
+                                        Sign Up
+                                    </Link>
 
-                                <div className="flex flex-col gap-2">
-                                    <Button variant="outline" className="w-full" type="button" disabled={isPending}>Login with Google</Button>
-                                    <Button variant="outline" className="w-full" type="button" disabled={isPending}>Login with GitHub</Button>
-                                </div>
-
-                                <div className="grid gap-6">
-                                    <FormField name="email"
-                                        control={form.control}
-                                        render={({ field }) =>
-                                            <FormItem>
-                                                <FormLabel>Email</FormLabel>
-                                                <FormControl>
-                                                    <Input type="email" placeholder="example@gmail.com" {...field} />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>}
-                                    />
-                                    <FormField name="password"
-                                        control={form.control}
-                                        render={({ field }) =>
-                                            <FormItem>
-                                                <FormLabel>Password</FormLabel>
-                                                <FormControl>
-                                                    <Input type="password" placeholder="••••••••" {...field} />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>}
-                                    />
-                                    <Button type="submit" disabled={isPending}>
-                                        Login
-                                    </Button>
-                                    <div className="text-center">
-                                        Don&apos;t have an account?{" "}
-                                        <Link href={"/register"} className="underline underline-offset-4">
-                                            Sign Up
-                                        </Link>
-
-                                    </div>
                                 </div>
                             </div>
-                        </form>
-                    </Form>
-                </CardContent>
-            </Card>
-        </div>
+                        </div>
+                    </form>
+                </Form>
+            </CardContent>
+        </Card>
     )
 }
