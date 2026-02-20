@@ -1,5 +1,7 @@
 import prisma from "@/lib/prisma";
 import { inngest } from "./client";
+import { generateText } from "ai";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
 export const helloWorld = inngest.createFunction(
   { id: "create-workflow" },
@@ -15,5 +17,20 @@ export const helloWorld = inngest.createFunction(
         },
       });
     });
+  },
+);
+
+const google = createGoogleGenerativeAI();
+
+export const executeAi = inngest.createFunction(
+  { id: "execute-ai" },
+  { event: "ai/execute" },
+  async ({ event, step }) => {
+    const { steps } = await step.ai.wrap("gemini-about-ajnan", generateText, {
+      model: google("gemini-2.5-flash"),
+      system: "you are a helpful assistant",
+      prompt: "who is muhammed ajnan p",
+    });
+    return steps;
   },
 );
