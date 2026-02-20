@@ -25,7 +25,9 @@ const google = createGoogleGenerativeAI();
 export const executeAi = inngest.createFunction(
   { id: "execute-ai" },
   { event: "ai/execute" },
+
   async ({ event, step }) => {
+    await step.sleep("pretend", "5s");
     const { steps } = await step.ai.wrap("gemini-about-ajnan", generateText, {
       model: google("gemini-2.5-flash"),
       system: "you are a helpful assistant",
