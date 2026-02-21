@@ -39,6 +39,11 @@ export const executeAi = inngest.createFunction(
         model: google("gemini-2.5-flash"),
         system: "you are a helpful assistant",
         prompt: "who is muhammed ajnan p",
+        experimental_telemetry: {
+          isEnabled: true,
+          recordInputs: true,
+          recordOutputs: true,
+        },
       },
     );
     const { steps: openAiSteps } = await step.ai.wrap(
@@ -48,6 +53,11 @@ export const executeAi = inngest.createFunction(
         model: openAi("gpt-4.1-mini"),
         system: "you are a helpful assistant",
         prompt: "who is muhammed ajnan p",
+        experimental_telemetry: {
+          isEnabled: true,
+          recordInputs: true,
+          recordOutputs: true,
+        },
       },
     );
     const { steps: anthropicSteps } = await step.ai.wrap(
@@ -57,6 +67,11 @@ export const executeAi = inngest.createFunction(
         model: anthropic("claude-3-7-sonnet-20250219"),
         system: "you are a helpful assistant",
         prompt: "who is muhammed ajnan p",
+        experimental_telemetry: {
+          isEnabled: true,
+          recordInputs: true,
+          recordOutputs: true,
+        },
       },
     );
     return {
