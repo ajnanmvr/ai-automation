@@ -4,7 +4,8 @@ import { CreditCardIcon, FolderOpenIcon, HistoryIcon, KeyIcon, LogOutIcon, StarI
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar"
 import Link from "next/link"
 import Image from "next/image"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { authClient } from "@/lib/auth-client"
 
 const menuItems = [{
     title: "Workflows",
@@ -27,6 +28,7 @@ const menuItems = [{
 }]
 export default function AppSideBar() {
     const pathName = usePathname()
+    const router = useRouter()
     return (
         <Sidebar collapsible="icon">
             <SidebarHeader>
@@ -43,24 +45,26 @@ export default function AppSideBar() {
                 {menuItems.map((group) => (
                     <SidebarGroup key={group.title}>
                         <SidebarGroupContent>
-                            {group.items.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild
-                                        isActive={
-                                            item.url === "/" ?
-                                                pathName === "/" :
-                                                pathName.startsWith(item.url)
-                                        }
-                                        tooltip={item.title}
-                                        className="gap-x-4 h-10 px-4"
-                                    >
-                                        <Link href={item.url}>
-                                            <item.icon className="size-4" />
-                                            <span>{item.title}</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
+                            <SidebarMenu>
+                                {group.items.map((item) => (
+                                    <SidebarMenuItem key={item.title}>
+                                        <SidebarMenuButton asChild
+                                            isActive={
+                                                item.url === "/" ?
+                                                    pathName === "/" :
+                                                    pathName.startsWith(item.url)
+                                            }
+                                            tooltip={item.title}
+                                            className="gap-x-4 h-10 px-4"
+                                        >
+                                            <Link href={item.url}>
+                                                <item.icon className="size-4" />
+                                                <span>{item.title}</span>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                ))}
+                            </SidebarMenu>
                         </SidebarGroupContent>
                     </SidebarGroup>
                 ))}
@@ -81,7 +85,16 @@ export default function AppSideBar() {
                     </SidebarMenuItem>
                     <SidebarMenuItem>
                         <SidebarMenuButton tooltip="Logout"
-                            className="gap-x-4 h-10 px-4 text-red-500">
+                            onClick={() => authClient.signOut({
+                                fetchOptions: {
+                                    onSuccess: () => {
+                                        router.push("/login")
+                                    }
+                                }
+
+
+                            })}
+                            className="gap-x-4 h-10 px-4">
                             <LogOutIcon className="h-4 w-4" /> <span>Logout</span>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
