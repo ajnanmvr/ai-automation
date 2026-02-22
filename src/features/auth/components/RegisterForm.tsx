@@ -2,38 +2,44 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { z } from 'zod';
-import { Button } from "../ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
-import { Input } from "../ui/input";
+import z from "zod";
+import { Button } from "../../../components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../../components/ui/form";
+import { Input } from "../../../components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Image from "next/image";
 
-const loginSchema = z.object({
-    email: z.email('Please enter a valid email'),
-    password: z.string().min(6, "Minimul 6 character required")
+const registerSchema = z.object({
+    email: z.email("email is required"),
+    password: z.string().min(8, "Minimum 8 characters required"),
+    password2: z.string()
+}).refine((data) => data.password === data.password2, {
+    message: "passwords don't match",
+    path: ["password2"]
 })
 
-type TLoginForm = z.infer<typeof loginSchema>
+type TRegisterForm = z.infer<typeof registerSchema>
 
-
-export default function LoginForm() {
+export default function RegisterForm() {
     const router = useRouter()
-    const form = useForm<TLoginForm>({
-        resolver: zodResolver(loginSchema),
+    const form = useForm<TRegisterForm>({
+        resolver: zodResolver(registerSchema),
         defaultValues: {
             email: "",
-            password: ""
+            password: "",
+            password2: ""
         }
     })
 
-    const onSubmit = async (values: TLoginForm) => {
-        await authClient.signIn.email({
+    const onSubmit = async (values: TRegisterForm) => {
+        await authClient.signUp.email({
+            name: values.email,
             email: values.email,
-            password: values.password
+            password: values.password,
+            callbackURL: "/",
         }, {
             onSuccess: () => {
                 router.push("/")
@@ -41,16 +47,17 @@ export default function LoginForm() {
             onError: (ctx) => {
                 toast.error(ctx.error.message)
             }
-        })
+        }
+        )
     }
-
     const isPending = form.formState.isSubmitting
 
     return (
         <Card className="w-full">
             <CardHeader className="text-center">
-                <CardTitle>Welcome back</CardTitle>
-                <CardDescription>Sign in to your account</CardDescription>
+
+                <CardTitle>Welcome</CardTitle>
+                <CardDescription>Register your account</CardDescription>
             </CardHeader>
             <CardContent>
                 <Form {...form}>
@@ -89,13 +96,26 @@ export default function LoginForm() {
                                             <FormMessage />
                                         </FormItem>}
                                 />
+                                <FormField
+                                    control={form.control}
+                                    name="password2"
+                                    render={({ field }) =>
+                                        <FormItem>
+                                            <FormLabel>Confirm Password</FormLabel>
+                                            <FormControl>
+                                                <Input type="password" placeholder="••••••••"  {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    }
+                                />
                                 <Button type="submit" disabled={isPending}>
-                                    Login
+                                    Get Started
                                 </Button>
                                 <div className="text-center">
-                                    Don&apos;t have an account?{" "}
-                                    <Link href={"/register"} className="underline underline-offset-4">
-                                        Sign Up
+                                    Already have an account?{" "}
+                                    <Link href={"/login"} className="underline underline-offset-4">
+                                        Login
                                     </Link>
 
                                 </div>

@@ -6,6 +6,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
 import { authClient } from "@/lib/auth-client"
+import { useHasActiveSubsciption } from "@/features/subscription/hooks/useSubsciption"
 
 const menuItems = [{
     title: "Workflows",
@@ -29,6 +30,7 @@ const menuItems = [{
 export default function AppSideBar() {
     const pathName = usePathname()
     const router = useRouter()
+    const { hasActiveSubsciption, isLoading } = useHasActiveSubsciption()
     return (
         <Sidebar collapsible="icon">
             <SidebarHeader>
@@ -71,19 +73,24 @@ export default function AppSideBar() {
             </SidebarContent>
             <SidebarFooter>
                 <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton tooltip="Upgrade to Pro"
-                            className="gap-x-4 h-10 px-4"
-                            onClick={() => authClient.checkout({
-                                slug: "pro"
-                            })}>
-                            <StarIcon className="h-4 w-4" /> <span>Upgrade to Pro</span>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
+                    {!isLoading && !hasActiveSubsciption && (
+                        <SidebarMenuItem>
+                            <SidebarMenuButton tooltip="Upgrade to Pro"
+                                className="gap-x-4 h-10 px-4"
+                                onClick={() => authClient.checkout({
+                                    slug: "pro"
+                                })}>
+                                <StarIcon className="h-4 w-4" />
+                                <span>Upgrade to Pro</span>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    )}
                     <SidebarMenuItem>
                         <SidebarMenuButton tooltip="Billing Portal"
+                            onClick={() => authClient.customer.portal()}
                             className="gap-x-4 h-10 px-4">
-                            <CreditCardIcon className="h-4 w-4" /> <span>Billing Portal</span>
+                            <CreditCardIcon className="h-4 w-4" />
+                            <span>Billing Portal</span>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                     <SidebarMenuItem>
