@@ -36,7 +36,7 @@ export default function AppSideBar() {
             <SidebarHeader>
                 <SidebarMenuItem>
                     <SidebarMenuButton asChild>
-                        <Link href='/' className="flex items-center gap-2 self-center ">
+                        <Link href='/' prefetch className="flex items-center gap-2 self-center ">
                             <Image src={'/logos/logo.svg'} alt="logo" height={30} width={30} />
                             <span className="font-semibold text-sm">Nodebase</span>
                         </Link>
@@ -59,7 +59,7 @@ export default function AppSideBar() {
                                             tooltip={item.title}
                                             className="gap-x-4 h-10 px-4"
                                         >
-                                            <Link href={item.url}>
+                                            <Link href={item.url} prefetch>
                                                 <item.icon className="size-4" />
                                                 <span>{item.title}</span>
                                             </Link>
