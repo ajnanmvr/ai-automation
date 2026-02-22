@@ -73,7 +73,10 @@ export default function AppSideBar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton tooltip="Upgrade to Pro"
-                            className="gap-x-4 h-10 px-4">
+                            className="gap-x-4 h-10 px-4"
+                            onClick={() => authClient.checkout({
+                                slug: "pro"
+                            })}>
                             <StarIcon className="h-4 w-4" /> <span>Upgrade to Pro</span>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -91,8 +94,6 @@ export default function AppSideBar() {
                                         router.push("/login")
                                     }
                                 }
-
-
                             })}
                             className="gap-x-4 h-10 px-4">
                             <LogOutIcon className="h-4 w-4" /> <span>Logout</span>
