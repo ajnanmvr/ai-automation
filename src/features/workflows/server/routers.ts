@@ -1,3 +1,4 @@
+import { PAGINATION } from "@/config/constants";
 import prisma from "@/lib/prisma";
 import {
   createTRPCRouter,
@@ -52,11 +53,46 @@ export const workflowsRouter = createTRPCRouter({
         },
       });
     }),
-  getMany: protectedProcedure.query(({ ctx }) => {
-    return prisma.workFlows.findMany({
-      where: {
-        userId: ctx.auth.user.id,
-      },
-    });
-  }),
+
+  getMany: protectedProcedure
+    .input(
+      z.object({
+        page: z.number().default(PAGINATION.DEFAULT_PAGE),
+        pageSize: z
+          .number()
+          .min(PAGINATION.MINIMUM_PAGE_SIZE)
+          .max(PAGINATION.MAXIMUM_PAGE_SIZE)
+          .default(PAGINATION.DEFAULT_PAGE_SIZE),
+        search: z.string().default(""),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { page, pageSize, search } = input;
+      const [items, itemsCount] = await Promise.all([
+        prisma.workFlows.findMany({
+          skip: (page - 1) * pageSize,
+          take: pageSize,
+          where: {
+            userId: ctx.auth.user.id,
+            name: {
+              contains: search,
+              mode: "insensitive",
+            },
+          },
+          orderBy: {
+            updatedAt: "desc",
+          },
+        }),
+        prisma.workFlows.count({
+          where: {
+            userId: ctx.auth.user.id,
+          },
+        }),
+      ]);
+
+      return {
+        items,
+        itemsCount,
+      };
+    }),
 });

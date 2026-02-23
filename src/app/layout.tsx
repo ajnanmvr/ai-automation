@@ -3,6 +3,8 @@ import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
 import { Toaster } from "sonner";
 import { Geist } from "next/font/google";
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
