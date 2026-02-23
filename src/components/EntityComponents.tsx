@@ -35,7 +35,7 @@ export default function EntityHeader({
                     size="sm"
                 >
                     <PlusIcon className="size-4" />
-                    {newButtonLabel}
+                    {newButtonLabel || "New" + { title }}
                 </Button>
             )}
             {!onNew && newButtonHref && (
@@ -43,12 +43,36 @@ export default function EntityHeader({
                     asChild
                     size="sm"
                 >
-                    <Link href={newButtonHref}>
+                    <Link href={newButtonHref} prefetch>
                         <PlusIcon className="size-4" />
                         {newButtonLabel}
                     </Link>
                 </Button>
             )}
+        </div>
+    )
+}
+
+type EntityContainerProps = {
+    header?: React.ReactNode,
+    search?: React.ReactNode,
+    pagination?: React.ReactNode,
+    children: React.ReactNode
+}
+
+export const EntityContainer = ({
+    header, search, pagination, children
+}: EntityContainerProps) => {
+    return (
+        <div className="p-4 md:p-10 md:py-6 h-full">
+            <div className="mx-auto max-w-7xl w-full flex flex-col gap-y-8 h-full">
+                {header}
+                <div className="flex flex-col gap-y-4 h-full">
+                    {search}
+                    {children}
+                </div>
+                {pagination}
+            </div>
         </div>
     )
 }
