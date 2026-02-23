@@ -2,6 +2,10 @@
 import EntityHeader, { EntityContainer } from "@/components/EntityComponents";
 import { useCreateWorkflow, useSuspenseWorkflows } from "../hooks/useWorkflows";
 import { useRouter } from "next/navigation";
+import { useUpgradeModal } from '@/hooks/use-upgrade-modal'
+
+
+
 
 export const WorkflowsList = () => {
   const workflows = useSuspenseWorkflows();
@@ -9,8 +13,11 @@ export const WorkflowsList = () => {
 }
 
 
+
 export const WorkflowsHeader = ({ disabled }: { disabled?: boolean }) => {
   const createWorkflow = useCreateWorkflow()
+  const upgradeModal = useUpgradeModal()
+
   const router = useRouter()
   const handleCreate = () => {
     createWorkflow.mutate(undefined, {
@@ -18,20 +25,24 @@ export const WorkflowsHeader = ({ disabled }: { disabled?: boolean }) => {
         router.push(`/workflows/${data.id}`)
       },
       onError: (error) => {
-        console.error(error)
+        upgradeModal.handleError(error)
       }
     }
     )
   }
   return (
-    <EntityHeader
-      title="Workflows"
-      description="Create and manage workflows"
-      disabled={disabled}
-      isCreating={false}
-      onNew={handleCreate}
-      newButtonLabel="New Workflow"
-    />
+    <>
+      {upgradeModal.modal}
+      
+      <EntityHeader
+        title="Workflows"
+        description="Create and manage workflows"
+        disabled={disabled}
+        isCreating={createWorkflow.isPending}
+        onNew={handleCreate}
+        newButtonLabel="New Workflow"
+      />
+    </>
   )
 }
 
