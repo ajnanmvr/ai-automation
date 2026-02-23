@@ -9,7 +9,7 @@ export default function Layout({
     return (
         <SidebarProvider>
             <AppSideBar />
-            <SidebarInset className="bg-accent">
+            <SidebarInset className="bg-accent/20">
                 {children}
             </SidebarInset>
         </SidebarProvider>
