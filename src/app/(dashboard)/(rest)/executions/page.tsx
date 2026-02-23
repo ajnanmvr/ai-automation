@@ -1,5 +1,8 @@
+import { requireAuth } from "@/lib/auth-utils"
 
-export default function ExecutionsPage() {
+export default async function ExecutionsPage() {
+    await requireAuth()
+  
   return (
     <div>Executions</div>
   )
