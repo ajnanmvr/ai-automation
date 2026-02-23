@@ -4,7 +4,6 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import { inngest } from "./client";
 
-
 const google = createGoogleGenerativeAI();
 const anthropic = createAnthropic();
 const openAi = createOpenAI();

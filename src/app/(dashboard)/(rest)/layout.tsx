@@ -1,14 +1,14 @@
 import AppHeader from "@/components/AppHeader";
 
 export default function Layout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <>
-            <AppHeader />
-            {children}
-        </>
-    );
+  return (
+    <>
+      <AppHeader />
+      {children}
+    </>
+  );
 }
