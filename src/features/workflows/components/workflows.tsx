@@ -1,7 +1,8 @@
 "use client";
 import { useSuspenseWorkflows } from "../hooks/useWorkflows";
 
-export default function WorkflowsList() {
+export function WorkflowsList() {
   const workflows = useSuspenseWorkflows();
   return <div>{JSON.stringify(workflows.data)}</div>;
 }
+
