@@ -68,7 +68,7 @@ export const workflowsRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const { page, pageSize, search } = input;
-      const [items, itemsCount] = await Promise.all([
+      const [items, totalCount] = await Promise.all([
         prisma.workFlows.findMany({
           skip: (page - 1) * pageSize,
           take: pageSize,
@@ -90,9 +90,17 @@ export const workflowsRouter = createTRPCRouter({
         }),
       ]);
 
+      const totalPages = Math.ceil(totalCount / pageSize);
+      const hasNextPage = page < totalPages;
+      const hasPrevPage = page > 1;
       return {
         items,
-        itemsCount,
+        page,
+        pageSize,
+        totalCount,
+        totalPages,
+        hasNextPage,
+        hasPrevPage,
       };
     }),
 });
