@@ -3,3 +3,7 @@ procs:
     cmd: ["cmd", "/c", "pnpm dev"]
   inngest:
     cmd: ["cmd", "/c", "pnpm inngest:dev"]
+    autostart: false
+  prisma-studio:
+    cmd: ["cmd", "/c", "pnpm dlx prisma studio"]
+    autostart: false
