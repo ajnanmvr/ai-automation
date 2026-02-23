@@ -1,6 +1,7 @@
 "use client";
 import EntityHeader, { EntityContainer } from "@/components/EntityComponents";
-import { useSuspenseWorkflows } from "../hooks/useWorkflows";
+import { useCreateWorkflow, useSuspenseWorkflows } from "../hooks/useWorkflows";
+import { useRouter } from "next/navigation";
 
 export const WorkflowsList = () => {
   const workflows = useSuspenseWorkflows();
@@ -9,13 +10,26 @@ export const WorkflowsList = () => {
 
 
 export const WorkflowsHeader = ({ disabled }: { disabled?: boolean }) => {
+  const createWorkflow = useCreateWorkflow()
+  const router = useRouter()
+  const handleCreate = () => {
+    createWorkflow.mutate(undefined, {
+      onSuccess: (data) => {
+        router.push(`/workflows/${data.id}`)
+      },
+      onError: (error) => {
+        console.error(error)
+      }
+    }
+    )
+  }
   return (
     <EntityHeader
       title="Workflows"
       description="Create and manage workflows"
       disabled={disabled}
       isCreating={false}
-      onNew={() => { console.log("new workflow") }}
+      onNew={handleCreate}
       newButtonLabel="New Workflow"
     />
   )
