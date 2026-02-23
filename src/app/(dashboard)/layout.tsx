@@ -2,16 +2,14 @@ import AppSideBar from "@/components/AppSideBar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 export default function Layout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <SidebarProvider>
-            <AppSideBar />
-            <SidebarInset className="bg-accent/20">
-                {children}
-            </SidebarInset>
-        </SidebarProvider>
-    );
+  return (
+    <SidebarProvider>
+      <AppSideBar />
+      <SidebarInset className="bg-accent/20">{children}</SidebarInset>
+    </SidebarProvider>
+  );
 }

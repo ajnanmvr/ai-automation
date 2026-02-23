@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
 import { Toaster } from "sonner";
-import { Geist } from "next/font/google"
+import { Geist } from "next/font/google";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 };
 
 const geist = Geist({
-  subsets: ['latin']
-})
+  subsets: ["latin"],
+});
 
 export default function RootLayout({
   children,
@@ -21,9 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={geist.className + " antialiased"}>
-        <TRPCReactProvider>
-          {children}
-        </TRPCReactProvider>
+        <TRPCReactProvider>{children}</TRPCReactProvider>
         <Toaster />
       </body>
     </html>
