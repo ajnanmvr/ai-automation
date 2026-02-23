@@ -53,7 +53,7 @@ export default function EntityHeader({
     )
 }
 
-type EntityContainerProps = {
+type TEntityContainerProps = {
     header?: React.ReactNode,
     search?: React.ReactNode,
     pagination?: React.ReactNode,
@@ -62,7 +62,7 @@ type EntityContainerProps = {
 
 export const EntityContainer = ({
     header, search, pagination, children
-}: EntityContainerProps) => {
+}: TEntityContainerProps) => {
     return (
         <div className="p-4 md:p-10 md:py-6 h-full">
             <div className="mx-auto max-w-7xl w-full flex flex-col gap-y-8 h-full">
