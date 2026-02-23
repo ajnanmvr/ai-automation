@@ -1,5 +1,7 @@
+import { requireAuth } from "@/lib/auth-utils"
 
-export default function CredentialsPage() {
+export default async function CredentialsPage() {
+  await requireAuth()
   return (
     <div>Credentials</div>
   )
