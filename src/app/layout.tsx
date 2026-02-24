@@ -23,7 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={geist.className + " antialiased"}>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <NuqsAdapter>
+            {children}
+          </NuqsAdapter>
+        </TRPCReactProvider>
         <Toaster />
       </body>
     </html>
