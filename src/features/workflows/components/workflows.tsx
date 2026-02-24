@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal'
 
 
-
-
 export const WorkflowsList = () => {
   const workflows = useSuspenseWorkflows();
   return <div>{JSON.stringify(workflows.data,null,2)}</div>;
