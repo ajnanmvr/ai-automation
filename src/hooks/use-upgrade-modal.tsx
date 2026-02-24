@@ -1,4 +1,4 @@
-import { UpgradeModal } from "@/components/UpgradeModal";
+import { UpgradeModal } from "@/components/upgrade-modal";
 import { TRPCClientError } from "@trpc/client";
 import { useState } from "react";
 

@@ -1,6 +1,6 @@
 "use client";
-import EntityHeader, { EntityContainer } from "@/components/EntityComponents";
-import { useCreateWorkflow, useSuspenseWorkflows } from "../hooks/useWorkflows";
+import EntityHeader, { EntityContainer } from "@/components/entity-components";
+import { useCreateWorkflow, useSuspenseWorkflows } from "../hooks/use-workflows";
 import { useRouter } from "next/navigation";
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal'
 
