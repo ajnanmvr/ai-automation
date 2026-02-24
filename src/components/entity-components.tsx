@@ -1,6 +1,7 @@
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, SearchIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { Input } from "./ui/input";
 
 type TEntityHeaderProps = {
     title: string,
@@ -53,7 +54,27 @@ export default function EntityHeader({
     )
 }
 
-type TEntityContainerProps = {
+interface IEntitySearchProps {
+    value: string,
+    onChange: (value: string) => void,
+    placeholder?: string
+}
+
+
+export const EntitySearch = ({ value, onChange, placeholder = "Search" }: IEntitySearchProps) => {
+    return (
+        <div className="relative ml-auto">
+            <SearchIcon className="size-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <Input className="max-w-[200px] bg-background shadow-none border-border pl-8"
+                value={value} onChange={(e)=>onChange(e.target.value)} placeholder={placeholder}
+            />
+        </div>
+    )
+}
+
+
+
+interface IEntityContainerProps {
     header?: React.ReactNode,
     search?: React.ReactNode,
     pagination?: React.ReactNode,
@@ -62,7 +83,7 @@ type TEntityContainerProps = {
 
 export const EntityContainer = ({
     header, search, pagination, children
-}: TEntityContainerProps) => {
+}: IEntityContainerProps) => {
     return (
         <div className="p-4 md:p-10 md:py-6 h-full">
             <div className="mx-auto max-w-7xl w-full flex flex-col gap-y-8 h-full">

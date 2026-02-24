@@ -1,5 +1,5 @@
 "use client";
-import EntityHeader, { EntityContainer } from "@/components/entity-components";
+import EntityHeader, { EntityContainer, EntitySearch } from "@/components/entity-components";
 import { useCreateWorkflow, useSuspenseWorkflows } from "../hooks/use-workflows";
 import { useRouter } from "next/navigation";
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal'
@@ -7,11 +7,11 @@ import { useUpgradeModal } from '@/hooks/use-upgrade-modal'
 
 export const WorkflowsList = () => {
   const workflows = useSuspenseWorkflows();
-  return <div>{JSON.stringify(workflows.data,null,2)}</div>;
+  return <div>{JSON.stringify(workflows.data, null, 2)}</div>;
 }
 
 
-export const WorkflowsHeader = ({ disabled }: { disabled?: boolean }) => {
+const WorkflowsHeader = ({ disabled }: { disabled?: boolean }) => {
   const createWorkflow = useCreateWorkflow()
   const upgradeModal = useUpgradeModal()
 
@@ -30,7 +30,7 @@ export const WorkflowsHeader = ({ disabled }: { disabled?: boolean }) => {
   return (
     <>
       {upgradeModal.modal}
-      
+
       <EntityHeader
         title="Workflows"
         description="Create and manage workflows"
@@ -43,11 +43,23 @@ export const WorkflowsHeader = ({ disabled }: { disabled?: boolean }) => {
   )
 }
 
+const WorkflowSearch = () => {
+  
+  return (
+    <EntitySearch
+      value=""
+      onChange={() => { }}
+      placeholder="Search Workflows"
+    />
+  )
+}
+
 
 export const WorkflowsContainer = ({ children }: { children: React.ReactNode }) => {
   return (
     <EntityContainer
       header={<WorkflowsHeader />}
+      search={<WorkflowSearch />}
     >
       {children}
     </EntityContainer>
