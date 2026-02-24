@@ -3,6 +3,8 @@ import EntityHeader, { EntityContainer, EntitySearch } from "@/components/entity
 import { useCreateWorkflow, useSuspenseWorkflows } from "../hooks/use-workflows";
 import { useRouter } from "next/navigation";
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal'
+import { useWorkflowsParams } from "../hooks/use-workflows-params";
+import { useEntitySearch } from "../hooks/use-entity-search";
 
 
 export const WorkflowsList = () => {
@@ -44,11 +46,12 @@ const WorkflowsHeader = ({ disabled }: { disabled?: boolean }) => {
 }
 
 const WorkflowSearch = () => {
-  
+  const [params, setParams] = useWorkflowsParams()
+  const { searchValue, onSearchChange } = useEntitySearch({ params, setParams })
   return (
     <EntitySearch
-      value=""
-      onChange={() => { }}
+      value={searchValue}
+      onChange={onSearchChange}
       placeholder="Search Workflows"
     />
   )
