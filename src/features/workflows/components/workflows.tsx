@@ -9,9 +9,8 @@ import { useUpgradeModal } from '@/hooks/use-upgrade-modal'
 
 export const WorkflowsList = () => {
   const workflows = useSuspenseWorkflows();
-  return <div>{JSON.stringify(workflows.data)}</div>;
+  return <div>{JSON.stringify(workflows.data,null,2)}</div>;
 }
-
 
 
 export const WorkflowsHeader = ({ disabled }: { disabled?: boolean }) => {
