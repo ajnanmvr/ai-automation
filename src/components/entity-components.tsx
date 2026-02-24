@@ -72,7 +72,40 @@ export const EntitySearch = ({ value, onChange, placeholder = "Search" }: IEntit
     )
 }
 
-
+interface IEntityPaginationProps {
+    page: number,
+    totalPages: number,
+    onPageChange: (page: number) => void,
+    disabled?: boolean
+}
+export const EntityPagination = ({
+    page,
+    totalPages,
+    onPageChange,
+    disabled
+}: IEntityPaginationProps) => {
+    return (
+        <div>
+            <div>
+                Page {page} of {totalPages}
+            </div>
+            <div>
+                <Button disabled={disabled || page === 1}
+                    onClick={() => {
+                        onPageChange(Math.max(1, page - 1))
+                    }}>
+                    Prev
+                </Button>
+                <Button disabled={disabled || page === totalPages || totalPages === 0}
+                    onClick={() => {
+                        onPageChange(Math.min(totalPages, page + 1))
+                    }}>
+                    Next
+                </Button>
+            </div>
+        </div>
+    )
+}
 
 interface IEntityContainerProps {
     header?: React.ReactNode,
