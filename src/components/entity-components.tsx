@@ -85,18 +85,20 @@ export const EntityPagination = ({
     disabled
 }: IEntityPaginationProps) => {
     return (
-        <div>
-            <div>
+        <div className="flex items-center justify-between gap-x-2 w-full">
+            <div className="flex-1 text-sm text-muted-foreground">
                 Page {page} of {totalPages}
             </div>
-            <div>
+            <div className="flex items-center justify-center space-x-2 py-4">
                 <Button disabled={disabled || page === 1}
+                    variant='outline' size='sm'
                     onClick={() => {
                         onPageChange(Math.max(1, page - 1))
                     }}>
                     Prev
                 </Button>
                 <Button disabled={disabled || page === totalPages || totalPages === 0}
+                    variant='outline' size='sm'
                     onClick={() => {
                         onPageChange(Math.min(totalPages, page + 1))
                     }}>
