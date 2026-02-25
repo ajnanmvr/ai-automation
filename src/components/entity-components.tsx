@@ -283,16 +283,16 @@ export const EntityItems = ({
                 <CardContent className="flex flex-row items-center justify-between p-0">
                     <div className="flex items-center gap-3">
                         {image}
-                    </div>
-                    <div>
-                        <CardTitle className="text-base font-medium">
-                            {title}
-                        </CardTitle>
-                        {!!subtitle &&
-                            <CardDescription className="text-xs">
-                                {subtitle}
-                            </CardDescription>
-                        }
+                        <div>
+                            <CardTitle className="text-base font-medium">
+                                {title}
+                            </CardTitle>
+                            {!!subtitle &&
+                                <CardDescription className="text-xs">
+                                    {subtitle}
+                                </CardDescription>
+                            }
+                        </div>
                     </div>
                     {(actions || onRemove) && (
                         <div className="flex gap-x-4 items-center">
