@@ -1,5 +1,5 @@
 "use client";
-import { EntityHeader, EntityContainer, EntityPagination, EntitySearch, LoadingView, ErrorView, EmptyView } from "@/components/entity-components";
+import { EntityHeader, EntityContainer, EntityPagination, EntitySearch, LoadingView, ErrorView, EmptyView, EntityList } from "@/components/entity-components";
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useRouter } from "next/navigation";
 import { useEntitySearch } from "../hooks/use-entity-search";
@@ -9,10 +9,13 @@ import { useWorkflowsParams } from "../hooks/use-workflows-params";
 
 export const WorkflowsList = () => {
   const workflows = useSuspenseWorkflows();
-  if (workflows.data.items.length === 0) {
-    return <WorkflowsEmpty />
-  }
-  return (<div>{JSON.stringify(workflows.data, null, 2)}</div>);
+  return (
+    <EntityList
+      items={workflows.data.items}
+      getKey={(item) => item.id}
+      renderItems={(item) => (<p>{item.name}</p>)}
+      emptyView={<WorkflowsEmpty />}
+    />);
 }
 
 
