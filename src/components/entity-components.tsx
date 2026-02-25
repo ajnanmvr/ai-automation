@@ -1,4 +1,4 @@
-import { PlusIcon, SearchIcon } from "lucide-react";
+import { AlertTriangleIcon, Loader2Icon, PlusIcon, SearchIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Input } from "./ui/input";
@@ -16,7 +16,7 @@ type TEntityHeaderProps = {
     )
 
 
-export default function EntityHeader({
+export function EntityHeader({
     title, description, disabled, isCreating, onNew, newButtonLabel, newButtonHref,
 }: TEntityHeaderProps) {
     return (
@@ -132,3 +132,30 @@ export const EntityContainer = ({
         </div>
     )
 }
+
+interface IStateViewProps {
+    message?: string
+}
+
+export const LoadingView = ({ message }: IStateViewProps) => {
+    return (
+        <div className="flex justify-center items-center h-full flex-1 flex-col gap-y-4">
+            <Loader2Icon className="size-6 animate-spin text-muted-foreground" />
+            <p className="text-muted-foreground text-sm">
+                {message || "Loading items"}
+            </p>
+        </div>
+    )
+}
+
+export const ErrorView = ({ message }: IStateViewProps) => {
+    return (
+        <div className="flex justify-center items-center h-full flex-1 flex-col gap-y-4">
+            <AlertTriangleIcon className="size-6 text-muted-foreground" />
+            <p className="text-muted-foreground text-sm">
+                {message || "Error loading items"}
+            </p>
+        </div>
+    )
+}
+

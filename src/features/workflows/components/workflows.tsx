@@ -1,5 +1,5 @@
 "use client";
-import EntityHeader, { EntityContainer, EntityPagination, EntitySearch } from "@/components/entity-components";
+import { EntityHeader, EntityContainer, EntityPagination, EntitySearch, LoadingView, ErrorView } from "@/components/entity-components";
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useRouter } from "next/navigation";
 import { useEntitySearch } from "../hooks/use-entity-search";
@@ -45,7 +45,7 @@ const WorkflowsHeader = ({ disabled }: { disabled?: boolean }) => {
   )
 }
 
-const WorkflowSearch = () => {
+const WorkflowsSearch = () => {
   const [params, setParams] = useWorkflowsParams()
   const { searchValue, onSearchChange } = useEntitySearch({ params, setParams })
   return (
@@ -76,10 +76,17 @@ export const WorkflowsContainer = ({ children }: { children: React.ReactNode }) 
   return (
     <EntityContainer
       header={<WorkflowsHeader />}
-      search={<WorkflowSearch />}
+      search={<WorkflowsSearch />}
       pagination={<WorkflowsPagination />}
     >
       {children}
     </EntityContainer>
   )
+}
+
+export const WorkflowsLoading = () => {
+  return <LoadingView message="Loading workflows..." />
+}
+export const WorkflowsError = () => {
+  return <ErrorView message="Error loading workflows" />
 }
