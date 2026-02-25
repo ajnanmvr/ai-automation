@@ -8,7 +8,7 @@ export default function Layout({
   return (
     <>
       <AppHeader />
-      {children}
+      <main className="flex-1">{children}</main>
     </>
   );
 }
