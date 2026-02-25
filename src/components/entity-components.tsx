@@ -187,14 +187,12 @@ export const EmptyView = ({
             <EmptyDescription>
                 {message || "No items found"}
             </EmptyDescription>
-
             {!!onNew &&
                 <EmptyContent>
                     <Button onClick={onNew}>
                         Add Item
                     </Button>
-                </EmptyContent>
-            }
+                </EmptyContent>}
         </Empty>
     )
 }
