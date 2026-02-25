@@ -1,7 +1,15 @@
-import { AlertTriangleIcon, Loader2Icon, PlusIcon, SearchIcon } from "lucide-react";
+import { AlertTriangleIcon, Loader2Icon, PackageOpenIcon, PlusIcon, SearchIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Input } from "./ui/input";
+import {
+    Empty,
+    EmptyHeader,
+    EmptyTitle,
+    EmptyDescription,
+    EmptyContent,
+    EmptyMedia,
+} from "./ui/empty"
 
 type TEntityHeaderProps = {
     title: string,
@@ -159,3 +167,34 @@ export const ErrorView = ({ message }: IStateViewProps) => {
     )
 }
 
+interface IEmptyViewProps extends IStateViewProps {
+    onNew?: () => void
+}
+
+export const EmptyView = ({
+    message, onNew
+}: IEmptyViewProps) => {
+    return (
+        <Empty className="border border-dashed bg-white">
+            <EmptyHeader>
+                <EmptyMedia variant="icon">
+                    <PackageOpenIcon />
+                </EmptyMedia>
+            </EmptyHeader>
+            <EmptyTitle>
+                No items
+            </EmptyTitle>
+            <EmptyDescription>
+                {message || "No items found"}
+            </EmptyDescription>
+
+            {!!onNew &&
+                <EmptyContent>
+                    <Button onClick={onNew}>
+                        Add Item
+                    </Button>
+                </EmptyContent>
+            }
+        </Empty>
+    )
+}

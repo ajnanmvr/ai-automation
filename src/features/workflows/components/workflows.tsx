@@ -1,5 +1,5 @@
 "use client";
-import { EntityHeader, EntityContainer, EntityPagination, EntitySearch, LoadingView, ErrorView } from "@/components/entity-components";
+import { EntityHeader, EntityContainer, EntityPagination, EntitySearch, LoadingView, ErrorView, EmptyView } from "@/components/entity-components";
 import { useUpgradeModal } from '@/hooks/use-upgrade-modal';
 import { useRouter } from "next/navigation";
 import { useEntitySearch } from "../hooks/use-entity-search";
@@ -9,7 +9,10 @@ import { useWorkflowsParams } from "../hooks/use-workflows-params";
 
 export const WorkflowsList = () => {
   const workflows = useSuspenseWorkflows();
-  return <div>{JSON.stringify(workflows.data, null, 2)}</div>;
+  if (workflows.data.items.length === 0) {
+    return <WorkflowsEmpty />
+  }
+  return (<div>{JSON.stringify(workflows.data, null, 2)}</div>);
 }
 
 
@@ -89,4 +92,8 @@ export const WorkflowsLoading = () => {
 }
 export const WorkflowsError = () => {
   return <ErrorView message="Error loading workflows" />
+}
+export const WorkflowsEmpty = () => {
+  return <EmptyView message="You haven't created any workflows yet. Get started
+  by creating your first workflow" onNew={() => { }} />
 }
