@@ -2,7 +2,7 @@ import { prefetchWorkflow } from "@/features/workflows/server/prefetch";
 import { HydrateClient } from "@/trpc/server";
 import { ErrorBoundary } from "react-error-boundary";
 import { Suspense } from "react";
-import { Editor, EditorError, EditorLoading } from "@/features/editor/components/editor";
+import { Editor, EditorError, EditorHeader, EditorLoading } from "@/features/editor/components/editor";
 
 interface IPageProps {
   params: Promise<{
@@ -18,7 +18,10 @@ export default async function CredentialsPage({ params }: IPageProps) {
     <HydrateClient>
       <ErrorBoundary fallback={<EditorError />}>
         <Suspense fallback={<EditorLoading />}>
-          <Editor workflowId={workflowId} />
+          <EditorHeader workflowId={workflowId} />
+          <main>
+            <Editor workflowId={workflowId} />
+          </main>
         </Suspense>
       </ErrorBoundary>
     </HydrateClient>
