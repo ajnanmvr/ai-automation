@@ -2,17 +2,17 @@ import { PAGINATION } from "@/config/constants"
 import { useEffect, useState } from "react"
 
 interface IUseEntitySearchProps<T extends {
-    search: string,
-    page: number
+    search: string;
+    page: number;
 }> {
-    params: T,
-    setParams: (params: T) => void,
-    debounceMs?: number
+    params: T;
+    setParams: (params: T) => void;
+    debounceMs?: number;
 }
 
 export function useEntitySearch<T extends {
-    search: string,
-    page: number
+    search: string;
+    page: number;
 }>({
     params,
     setParams,

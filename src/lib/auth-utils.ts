@@ -18,6 +18,6 @@ export const requireUnAuth = async () => {
   const { session } = await getSession();
 
   if (session) {
-    redirect("/me");
+    redirect("/");
   }
 };

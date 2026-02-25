@@ -11,8 +11,8 @@ import {
 } from "./ui/alert-dialog"
 
 type TUpgradeModalProps = {
-    open: boolean,
-    onOpenChange: (open: boolean) => void
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
 }
 
 export const UpgradeModal = (
