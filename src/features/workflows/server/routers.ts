@@ -1,11 +1,12 @@
 import { PAGINATION } from "@/config/constants";
+import { NodeType } from "@/generated/prisma/enums";
 import prisma from "@/lib/prisma";
 import {
   createTRPCRouter,
   premiumProcedure,
   protectedProcedure,
 } from "@/trpc/init";
-import { TRPCError } from "@trpc/server";
+import type { Node, Edge, XYPosition } from "@xyflow/react";
 import { generateSlug } from "random-word-slugs";
 import z from "zod";
 
@@ -15,6 +16,13 @@ export const workflowsRouter = createTRPCRouter({
       data: {
         name: generateSlug(3),
         userId: ctx.auth.user.id,
+        nodes: {
+          create: {
+            name: NodeType.INITIAL,
+            type: NodeType.INITIAL,
+            postion: { x: 0, y: 0 },
+          },
+        },
       },
     });
   }),
@@ -46,13 +54,41 @@ export const workflowsRouter = createTRPCRouter({
 
   getOne: protectedProcedure
     .input(z.object({ id: z.string() }))
-    .query(({ ctx, input }) => {
-      return prisma.workFlows.findUniqueOrThrow({
+    .query(async ({ ctx, input }) => {
+      const workflow = await prisma.workFlows.findUniqueOrThrow({
         where: {
           id: input.id,
           userId: ctx.auth.user.id,
         },
+        include: {
+          nodes: true,
+          connections: true,
+        },
       });
+      const nodes: Node[] = workflow.nodes.map((node) => {
+        return {
+          id: node.id,
+          type: node.type,
+          position: node.postion as XYPosition,
+          data: node.data as Record<string, unknown> | {},
+        };
+      });
+      const edges: Edge[] = workflow.connections.map((connection) => {
+        return {
+          id: connection.id,
+          source: connection.fromNodeId,
+          target: connection.toNodeId,
+          sourceHandle: connection.fromOutput,
+          targetHandle: connection.toInput
+        };
+      });
+
+      return {
+        id: workflow.id,
+        name: workflow.name,
+        nodes,
+        edges
+      };
     }),
 
   getMany: protectedProcedure
@@ -98,6 +134,7 @@ export const workflowsRouter = createTRPCRouter({
       const totalPages = Math.ceil(totalCount / pageSize);
       const hasNextPage = page < totalPages;
       const hasPrevPage = page > 1;
+
       return {
         items,
         page,
