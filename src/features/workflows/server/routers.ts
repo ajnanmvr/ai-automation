@@ -12,7 +12,7 @@ import z from "zod";
 
 export const workflowsRouter = createTRPCRouter({
   create: premiumProcedure.mutation(({ ctx }) => {
-    return prisma.workFlows.create({
+    return prisma.workflow.create({
       data: {
         name: generateSlug(3),
         userId: ctx.auth.user.id,
@@ -30,7 +30,7 @@ export const workflowsRouter = createTRPCRouter({
   remove: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(({ ctx, input }) => {
-      return prisma.workFlows.delete({
+      return prisma.workflow.delete({
         where: {
           id: input.id,
           userId: ctx.auth.user.id,
@@ -41,7 +41,7 @@ export const workflowsRouter = createTRPCRouter({
   updateName: protectedProcedure
     .input(z.object({ id: z.string(), name: z.string() }))
     .mutation(({ ctx, input }) => {
-      return prisma.workFlows.update({
+      return prisma.workflow.update({
         where: {
           id: input.id,
           userId: ctx.auth.user.id,
@@ -55,7 +55,7 @@ export const workflowsRouter = createTRPCRouter({
   getOne: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
-      const workflow = await prisma.workFlows.findUniqueOrThrow({
+      const workflow = await prisma.workflow.findUniqueOrThrow({
         where: {
           id: input.id,
           userId: ctx.auth.user.id,
@@ -106,7 +106,7 @@ export const workflowsRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { page, pageSize, search } = input;
       const [items, totalCount] = await Promise.all([
-        prisma.workFlows.findMany({
+        prisma.workflow.findMany({
           skip: (page - 1) * pageSize,
           take: pageSize,
           where: {
@@ -120,7 +120,7 @@ export const workflowsRouter = createTRPCRouter({
             updatedAt: "desc",
           },
         }),
-        prisma.workFlows.count({
+        prisma.workflow.count({
           where: {
             userId: ctx.auth.user.id,
             name: {

@@ -73,7 +73,7 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
                 <Controls />
                 <MiniMap />
                 <Panel position='top-right'>
-                    <AddNodeButton onClick={() => { }} />
+                    <AddNodeButton />
                 </Panel>
             </ReactFlow>
         </div>

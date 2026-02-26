@@ -14,16 +14,16 @@ datasource db {
 }
 
 model User {
-  id            String      @id
+  id            String     @id
   name          String
   email         String
-  emailVerified Boolean     @default(false)
+  emailVerified Boolean    @default(false)
   image         String?
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   sessions      Session[]
   accounts      Account[]
-  workflows     WorkFlows[]
+  workflows     Workflow[]
 
   @@unique([email])
   @@map("user")
@@ -77,7 +77,7 @@ model Verification {
   @@map("verification")
 }
 
-model WorkFlows {
+model Workflow {
   id   String @id @default(cuid())
   name String
 
@@ -93,12 +93,14 @@ model WorkFlows {
 
 enum NodeType {
   INITIAL
+  MANUAL_TRIGGER
+  HTTP_REQUEST
 }
 
 model Node {
-  id         String    @id @default(cuid())
+  id         String   @id @default(cuid())
   workflowId String
-  workflow   WorkFlows @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
   name       String
   type       NodeType
   postion    Json
@@ -114,7 +116,7 @@ model Connection {
   id String @id @default(cuid())
 
   workflowId String
-  workflow   WorkFlows @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
 
   fromNodeId String
   fromNode   Node   @relation("FromNode", fields: [fromNodeId], references: [id], onDelete: Cascade)
